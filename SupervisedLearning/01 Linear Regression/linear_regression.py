@@ -4,7 +4,7 @@ import pandas as pd
 class myLinearRegression:
     def __init__(self) -> None:
         self.weights = None
-        self.bias = None
+        self.intercept = None
     
     def fit(self, X_train, y_train, learning_rate = 0.01, epochs = 1000, tolerance = 1e-6) -> None:
         """
@@ -37,9 +37,9 @@ class myLinearRegression:
         # Get the number of features (n) and instances (m)
         m, n = X_train.shape
         
-        # Initialize weights and bias
+        # Initialize weights and intercept
         self.weights = np.random.randn(n, 1)  # (n, 1) for matrix multiplication
-        self.bias = np.random.randn()
+        self.intercept = np.random.randn()
         
         prev_mse = float('inf')
         
@@ -62,9 +62,9 @@ class myLinearRegression:
             dw = (2 / m) * np.dot(X_train.T, error)  # (n, m) * (m, 1) -> (n, 1)
             db = (2 / m) * np.sum(error)
             
-            # Update weights and bias
+            # Update weights and intercept
             self.weights -= learning_rate * dw
-            self.bias -= learning_rate * db
+            self.intercept -= learning_rate * db
 
     def predict(self, X_test) -> np.ndarray:
         """
@@ -80,5 +80,5 @@ class myLinearRegression:
             X_test = X_test.to_numpy()
         
         # Ensure correct matrix multiplication
-        return np.dot(X_test, self.weights) + self.bias
+        return np.dot(X_test, self.weights) + self.intercept
     
