@@ -85,7 +85,7 @@ class LogisticRegressionVisualizer:
         # Plot decision boundary and sigmoid
         X_test = np.linspace(1, 6, 100).reshape(-1, 1)
         y_test_probs = model.predict_proba(X_test)[:, 1]
-        plt.plot(X_train, (X_train * model.coef_ + model.intercept_),  color='black', label='Straight line model')
+        plt.plot(X_train, (X_train * model.coef_ + model.intercept_),  color='black', label='Linear Combination')
         plt.plot(X_test, y_test_probs, color='darkorange', linewidth=2.5, label='Sigmoid Curve')
         plt.contourf(xx, yy, Z, levels=50, cmap=self.cmap_prob, alpha=0.3)
         
@@ -97,8 +97,7 @@ class LogisticRegressionVisualizer:
         
         # Plot decision boundary points
         decision_values = (X_test * model.coef_ + model.intercept_).flatten()
-        plt.scatter(X_test, decision_values, c=probs, cmap=self.cmap_prob, 
-                   edgecolor='k', s=80, label='Decision Boundary Points')
+        plt.scatter(X_test, decision_values, c=probs, cmap=self.cmap_prob, edgecolor='k', s=80)
         
         # Plot distance lines
         for i in range(len(X_test)):
@@ -109,7 +108,7 @@ class LogisticRegressionVisualizer:
         plt.ylim(y_min, y_max)
         plt.xlabel('$x1$ (Feature)')
         plt.ylabel('Linear Map to Probability')
-        plt.title('Distance between the values in the decision boundary and the sigmoid')
+        plt.title('Distance between the linear combination and the sigmoid')
         plt.legend()
         plt.grid(True)
         plt.colorbar(label='Probability')
@@ -178,6 +177,10 @@ class LogisticRegressionVisualizer:
         
         ani = FuncAnimation(fig, update, frames=len(probs_history), 
                           init_func=init, blit=True, interval=500)
+        
+        # Save the dynamic visualization as gif
+        ani.save("SupervisedLearning/02 Logistic Regression/imgs/SigmoidCurveFitting.gif", writer="pillow", fps=7)
+        
         plt.show()
         
     def plot_2d_classification(self, X, y, model):
